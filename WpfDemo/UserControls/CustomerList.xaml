@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="WpfDemo.UserControls.CustomerList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfDemo.UserControls"
+             xmlns:converter="clr-namespace:WpfDemo.ValueConverters"  
+             xmlns:viewmodel="clr-namespace:WpfDemo.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewmodel:CustomerListViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="450" d:DesignWidth="800" >
+    <Grid Background="Beige">
+        <Grid.Resources>
+            <converter:CustomerToDisplayNameConverter x:Key="customerToDisplayNameConverter"></converter:CustomerToDisplayNameConverter>
+            <converter:DateToStringConverter x:Key="dateToStringConverter"></converter:DateToStringConverter>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".5*" />
+            <RowDefinition Height=".1*" />
+            <RowDefinition Height=".1*" />
+            <RowDefinition Height=".1*" />
+            <RowDefinition Height=".1*" />
+            <RowDefinition Height=".1*" />
+        </Grid.RowDefinitions>
+        <ListBox ItemsSource="{Binding CustomersView, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="0" x:Name="customerList">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="400">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".4*" />
+                            <ColumnDefinition Width=".2*"/>
+                            <ColumnDefinition Width=".2*" />
+                            <ColumnDefinition Width=".2*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding ., UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource customerToDisplayNameConverter}}" Grid.Row="0" Grid.Column="0"  />
+                        <Button Content="View" Command="{Binding ViewCustomer}" CommandParameter="{Binding ElementName=customerList,Path=SelectedItem}" Margin="4" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right"  />
+                        <Button Content="Update" Command="{Binding UpdateCustomer}" CommandParameter="{Binding ElementName=customerList,Path=SelectedItem}" Margin="4" Grid.Row="0" Grid.Column="2"  />
+                        <Button Content="Delete" Command="{Binding DeleteCustomer}" CommandParameter="{Binding ElementName=customerList,Path=SelectedItem}" Margin="4" Grid.Row="0" Grid.Column="3"  />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBlock Text="{Binding SelectedCustomer.Id}" Grid.Row="1" />
+        <TextBlock Text="{Binding SelectedCustomer, Converter={StaticResource customerToDisplayNameConverter}}" Grid.Row="2" />
+        <TextBlock Text="{Binding SelectedCustomer.DateOfBirth, Converter={StaticResource dateToStringConverter}}" Grid.Row="3" />
+        <TextBlock Text="{Binding SelectedCustomer.PanNo}" Grid.Row="4" />
+        <TextBlock Text="{Binding SelectedCustomer.AadharNo}" Grid.Row="5" />
+    </Grid>
+</UserControl>

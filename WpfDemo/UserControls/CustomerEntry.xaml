@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="WpfDemo.UserControls.CustomerEntry"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WpfDemo.ViewModels"
+             xmlns:converter="clr-namespace:WpfDemo.ValueConverters"  
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:CustomerEntryViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="Azure" Margin="4" Height="150" VerticalAlignment="Top">
+        <Grid.Resources>
+            <converter:DateToStringConverter x:Key="dateToStringConverter"></converter:DateToStringConverter>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="13*" />
+            <RowDefinition Height="13*"  />
+            <RowDefinition Height="13*"  />
+            <RowDefinition Height="13*"  />
+            <RowDefinition Height="14*"  />
+            <RowDefinition Height="34*"  />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="6*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="First Name" Grid.Row="0"  Grid.Column="0" Margin="2" />
+        <TextBox Text="{Binding Customer.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0"  Grid.Column="1" Margin="2"  />
+        <TextBlock Text="Last Name" Grid.Row="1"  Grid.Column="0"  Margin="2"  />
+        <TextBox Text="{Binding Customer.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"  Grid.Column="1" Margin="2"  />
+        <TextBlock Text="DOB (dd/mm/yyyy)" Grid.Row="2"  Grid.Column="0"  Margin="2"  />
+        <TextBox Text="{Binding Customer.DateOfBirth, UpdateSourceTrigger=LostFocus, Mode=TwoWay, Converter={StaticResource dateToStringConverter}}" Grid.Row="2"  Grid.Column="1" Margin="2"  />
+        <TextBlock Text="PAN" Grid.Row="3"  Grid.Column="0"  Margin="2"  />
+        <TextBox Text="{Binding Customer.PanNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3"  Grid.Column="1" Margin="2"  />
+        <TextBlock Text="Aadhar" Grid.Row="4"  Grid.Column="0"  Margin="2"  />
+        <TextBox Text="{Binding Customer.AadharNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4"  Grid.Column="1" Margin="2"  />
+        <Button Content="Save" Command="{Binding SaveCustomer}" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalAlignment="Right" Margin="2"  />
+    </Grid>
+
+    <!--<StackPanel Orientation="Horizontal">
+            <TextBlock Text="First Name" />
+            <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+        </StackPanel>-->
+</UserControl>
