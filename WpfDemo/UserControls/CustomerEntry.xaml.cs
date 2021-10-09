@@ -1,7 +1,6 @@
-﻿using System.Windows.Controls;
-using Unity;
-using WpfDemo.BusinessLogics.Contracts;
-using WpfDemo.ViewModels;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace WpfDemo.UserControls
 {
@@ -10,34 +9,30 @@ namespace WpfDemo.UserControls
     /// </summary>
     public partial class CustomerEntry : UserControl
     {
-        //public static readonly DependencyProperty FirstNameProperty =
-        // DependencyProperty.Register("FirstName", typeof(string), typeof(CustomerEntry), new
-        //    PropertyMetadata("", new PropertyChangedCallback(OnFirstNameChanged)));
-
-        //public string FirstName
-        //{
-        //    get { return (string)GetValue(FirstNameProperty); }
-        //    set { SetValue(FirstNameProperty, value); }
-        //}
-
-        //private static void OnFirstNameChanged(DependencyObject d,
-        //   DependencyPropertyChangedEventArgs e)
-        //{
-        //    var customerEntry = d as CustomerEntry;
-        //    customerEntry.OnFirstNameChanged(e);
-        //}
-
-        //private void OnFirstNameChanged(DependencyPropertyChangedEventArgs e)
-        //{
-        //    tbTest.Text = e.NewValue.ToString();
-        //}
+        public static readonly DependencyProperty ControlBackgroundColorProperty =
+          DependencyProperty.Register("ControlBackgroundColor", typeof(SolidColorBrush), typeof(CustomerEntry)
+              , new PropertyMetadata(new SolidColorBrush(Colors.HotPink), new PropertyChangedCallback(OnControlBackgroundColorChanged)));
 
         public CustomerEntry()
         {
             InitializeComponent();
-            //IUnityContainer container = new UnityContainer();
-            //var customerManager = container.Resolve<ICustomerManager>();
-            //DataContext = new CustomerEntryViewModel();
+        }
+
+        public SolidColorBrush ControlBackgroundColor
+        {
+            get { return (SolidColorBrush)GetValue(ControlBackgroundColorProperty); }
+            set { SetValue(ControlBackgroundColorProperty, value); }
+        }
+      
+        private static void OnControlBackgroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            CustomerEntry customerEntry = d as CustomerEntry;
+            customerEntry.ChangeBackground(e);
+        }
+
+        private void ChangeBackground(DependencyPropertyChangedEventArgs e)
+        {
+            customerEntryGrid.Background = (SolidColorBrush)e.NewValue;
         }
     }
 }

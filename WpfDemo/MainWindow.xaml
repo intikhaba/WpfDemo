@@ -17,7 +17,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <uc:CustomerEntry Grid.Row="0" Grid.Column="0" DataContext="{Binding CustomerEntryViewModel}" />
+        <uc:CustomerEntry Grid.Row="0" Grid.Column="0" DataContext="{Binding CustomerEntryViewModel}" ControlBackgroundColor="Red" />
         <uc:CustomerList Grid.Row="0" Grid.Column="1" DataContext="{Binding CustomerListViewModel}" />
     </Grid>
 </Window>

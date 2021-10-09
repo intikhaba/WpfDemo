@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:CustomerEntryViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Azure" Margin="4" Height="150" VerticalAlignment="Top">
+    <Grid Margin="4" Height="150" VerticalAlignment="Top" x:Name="customerEntryGrid">
         <Grid.Resources>
             <converter:DateToStringConverter x:Key="dateToStringConverter"></converter:DateToStringConverter>
         </Grid.Resources>
