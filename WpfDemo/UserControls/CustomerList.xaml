@@ -37,7 +37,32 @@
                             <ColumnDefinition Width=".2*" />
                             <ColumnDefinition Width=".2*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding ., UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource customerToDisplayNameConverter}}" Grid.Row="0" Grid.Column="0"  />
+                        <TextBlock Text="{Binding ., UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource customerToDisplayNameConverter}}" Grid.Row="0" Grid.Column="0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <EventTrigger RoutedEvent="MouseEnter">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="0:0:0.300" Storyboard.TargetProperty="FontSize" To="28" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="MouseLeave">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="0:0:0.800" Storyboard.TargetProperty="FontSize" To="18" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <Button Content="View" Command="{Binding ViewCustomer}" CommandParameter="{Binding ElementName=customerList,Path=SelectedItem}" Margin="4" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right"  />
                         <Button Content="Update" Command="{Binding UpdateCustomer}" CommandParameter="{Binding ElementName=customerList,Path=SelectedItem}" Margin="4" Grid.Row="0" Grid.Column="2"  />
                         <Button Content="Delete" Command="{Binding DeleteCustomer}" CommandParameter="{Binding ElementName=customerList,Path=SelectedItem}" Margin="4" Grid.Row="0" Grid.Column="3"  />
@@ -49,11 +74,6 @@
                     </DataTemplate.Triggers>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            <!--<ListBox.Triggers>
-                <EventTrigger RoutedEvent="{}">
-                    <action:WorksheetListBoxAction />
-                </EventTrigger>
-            </ListBox.Triggers>-->
         </ListBox>
         <TextBlock Text="{Binding SelectedCustomer.Id}" Grid.Row="1" />
         <TextBlock Text="{Binding SelectedCustomer, Converter={StaticResource customerToDisplayNameConverter}}" Grid.Row="2" />
