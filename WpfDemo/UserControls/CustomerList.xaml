@@ -37,31 +37,27 @@
                             <ColumnDefinition Width=".2*" />
                             <ColumnDefinition Width=".2*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding ., UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource customerToDisplayNameConverter}}" Grid.Row="0" Grid.Column="0">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Style.Triggers>
-                                        <EventTrigger RoutedEvent="MouseEnter">
-                                            <EventTrigger.Actions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:0.300" Storyboard.TargetProperty="FontSize" To="28" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger.Actions>
-                                        </EventTrigger>
-                                        <EventTrigger RoutedEvent="MouseLeave">
-                                            <EventTrigger.Actions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:0.800" Storyboard.TargetProperty="FontSize" To="18" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger.Actions>
-                                        </EventTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
+                        <TextBlock FontSize="15" Text="{Binding ., UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource customerToDisplayNameConverter}}" Grid.Row="0" Grid.Column="0">
+                            <TextBlock.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.300" Storyboard.TargetProperty="FontSize" To="28" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.800" Storyboard.TargetProperty="FontSize" To="15" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </TextBlock.Triggers>
                         </TextBlock>
                         <Button Content="View" Command="{Binding ViewCustomer}" CommandParameter="{Binding ElementName=customerList,Path=SelectedItem}" Margin="4" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right"  />
                         <Button Content="Update" Command="{Binding UpdateCustomer}" CommandParameter="{Binding ElementName=customerList,Path=SelectedItem}" Margin="4" Grid.Row="0" Grid.Column="2"  />
