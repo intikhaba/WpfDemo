@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WpfDemo.BusinessModels;
 
@@ -33,27 +34,33 @@ namespace WpfDemo.DataSources.JsonDataSource
             throw new Exception("This is not supported type.");
         }
 
-        public static void SaveEntity<T>(T t) where T : class, IBusinessEntity
+        public static async Task SaveEntity<T>(T t) where T : class, IBusinessEntity
         {
-            if (typeof(T) == typeof(Customer))
+            await Task.Run(() =>
             {
-                Customer newCustomer = t as Customer;
-                SaveCustomer(newCustomer);
-                return;
-            }
+                if (typeof(T) == typeof(Customer))
+                {
+                    Customer newCustomer = t as Customer;
+                    SaveCustomer(newCustomer);
+                    return;
+                }
 
-            throw new Exception("This is not supported type.");
+                throw new Exception("This is not supported type.");
+            });
         }
 
-        public static void DeleteEntity<T>(int id) where T : class, IBusinessEntity
+        public static async Task DeleteEntity<T>(int id) where T : class, IBusinessEntity
         {
-            if (typeof(T) == typeof(Customer))
+            await Task.Run(() =>
             {
-                DeleteCustomer(id);
-                return;
-            }
+                if (typeof(T) == typeof(Customer))
+                {
+                    DeleteCustomer(id);
+                    return;
+                }
 
-            throw new Exception("This is not supported type.");
+                throw new Exception("This is not supported type.");
+            });
         }
 
         private static void SaveCustomer(Customer newCustomer)
