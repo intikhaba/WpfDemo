@@ -25,11 +25,6 @@ namespace WpfDemo.Loggers
             DateTime dateTime = DateTime.Now;
             string filePath = $"{LoggerDirectory}\\{LoggerFileNamePrefix}_{dateTime.Day}_{dateTime.Month}_{dateTime.Year}.txt";
 
-            if (!File.Exists(filePath))
-            {
-                File.Create(filePath);
-            }
-
             using (StreamWriter streamWriter = File.AppendText(filePath))
             {
                 string text = $"{DateTime.Now.ToString()}: {message}";
