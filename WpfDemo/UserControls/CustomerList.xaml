@@ -49,6 +49,11 @@
                     </DataTemplate.Triggers>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <!--<ListBox.Triggers>
+                <EventTrigger RoutedEvent="{}">
+                    <action:WorksheetListBoxAction />
+                </EventTrigger>
+            </ListBox.Triggers>-->
         </ListBox>
         <TextBlock Text="{Binding SelectedCustomer.Id}" Grid.Row="1" />
         <TextBlock Text="{Binding SelectedCustomer, Converter={StaticResource customerToDisplayNameConverter}}" Grid.Row="2" />

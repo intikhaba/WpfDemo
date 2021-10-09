@@ -38,6 +38,6 @@
         <TextBox Text="{Binding Customer.AadharNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4"  Grid.Column="1" Margin="2"  />
         <TextBlock Text="Is Prime" Grid.Row="5"  Grid.Column="0"  Margin="2"  />
         <CheckBox IsChecked="{Binding Customer.IsPrime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5"  Grid.Column="1" Margin="2"  />
-        <Button Content="Save" Command="{Binding SaveCustomer}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalAlignment="Right" Margin="2"  />
+        <Button x:Name="btnSave" Command="{Binding SaveCustomer}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalAlignment="Right" Margin="2"  />
     </Grid>
 </UserControl>

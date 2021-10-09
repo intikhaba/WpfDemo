@@ -4,10 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:WpfDemo.UserControls"
-        xmlns:local="clr-namespace:WpfDemo"
-        xmlns:viewmodel="clr-namespace:WpfDemo.ViewModels"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=viewmodel:CustomerMainViewModel, IsDesignTimeCreatable=True}"
         Title="Customer" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -17,7 +14,9 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <uc:CustomerEntry Grid.Row="0" Grid.Column="0" DataContext="{Binding CustomerEntryViewModel}" ControlBackgroundColor="Red" />
+        <uc:CustomerEntry Grid.Row="0" Grid.Column="0" DataContext="{Binding CustomerEntryViewModel}"
+                          ControlBackgroundColor="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CustomerEntryBackground}"
+                          SaveLabel="{Binding Path=DataContext.SaveText, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
         <uc:CustomerList Grid.Row="0" Grid.Column="1" DataContext="{Binding CustomerListViewModel}" />
     </Grid>
 </Window>

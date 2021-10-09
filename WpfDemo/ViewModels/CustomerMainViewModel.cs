@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Prism.Events;
 using WpfDemo.Bootstrappers;
@@ -12,28 +14,61 @@ using WpfDemo.PubSubEvents;
 
 namespace WpfDemo.ViewModels
 {
-    public class CustomerMainViewModel
+    public class CustomerMainViewModel : INotifyPropertyChanged
     {
         private readonly ICustomerManager customerManager;
+        private SolidColorBrush customerEntryBackground;
+        public event PropertyChangedEventHandler PropertyChanged;
+        private string saveText;
+        private readonly IEventAggregator eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
 
         public CustomerMainViewModel(ICustomerManager customerManager)
         {
             this.customerManager = customerManager;//new CustomerManager();
 
             CustomerEntryViewModel = new CustomerEntryViewModel();
+            CustomerEntryBackground = Brushes.Azure;
+            SaveText = "Save";
             //CustomerEntryViewModel.CustomerEntry += CustomerEntryViewModel_CustomerEntry;
 
             GetCustomers(customerManager);
 
-            var eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
             eventAggregator.GetEvent<CustomerEntryPubSubEvent>().Subscribe(OnCustomerSave);
             eventAggregator.GetEvent<CustomerDeletePubSubEvent>().Subscribe(OnCustomerDelete);
-            
         }
 
         public CustomerEntryViewModel CustomerEntryViewModel { get; set; }
 
         public CustomerListViewModel CustomerListViewModel { get; set; }
+
+        public SolidColorBrush CustomerEntryBackground
+        {
+            get
+            {
+                return customerEntryBackground;
+            }
+            set
+            {
+                if (value != customerEntryBackground)
+                {
+                    customerEntryBackground = value;
+                    NotifyPropertyChanged(nameof(CustomerEntryBackground));
+                }
+            }
+        }
+
+        public string SaveText
+        {
+            get
+            {
+                return saveText;
+            }
+            set
+            {
+                saveText = value;
+                NotifyPropertyChanged(nameof(SaveText));
+            }
+        }
 
         private void GetCustomers(ICustomerManager customerManager)
         {
@@ -50,13 +85,6 @@ namespace WpfDemo.ViewModels
 
         private void OnCustomerSave(CustomerViewModel c)
         {
-            //Customer newCustomer = c.Copy();
-            //customerManager.SaveCustomer(newCustomer.ToBusinessCustomer());
-
-            //GetCustomers(customerManager);
-
-            //MessageBox.Show("Customer is saved successfully.");
-
             Task.Factory.StartNew(() =>
             {
                 CustomerViewModel newCustomer = c.Copy();
@@ -116,6 +144,11 @@ namespace WpfDemo.ViewModels
         {
             CustomerViewModel newCustomer = args.Customer.Copy();
             CustomerListViewModel.Customers.Add(newCustomer);
+        }
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
