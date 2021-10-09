@@ -14,6 +14,7 @@ namespace WpfDemo.ViewModels
         private DateTime? dateOfBirth;
         private string panNo;
         private string aadharNo;
+        private bool isPrime;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -113,6 +114,22 @@ namespace WpfDemo.ViewModels
             }
         }
 
+        public bool IsPrime
+        {
+            get
+            {
+                return isPrime;
+            }
+            set
+            {
+                if (value != isPrime)
+                {
+                    isPrime = value;
+                    NotifyPropertyChanged(nameof(IsPrime));
+                }
+            }
+        }
+
         public void Reset()
         {
             Id = 0;
@@ -121,6 +138,7 @@ namespace WpfDemo.ViewModels
             DateOfBirth = null;
             AadharNo = string.Empty;
             PanNo = string.Empty;
+            IsPrime = false;
         }
 
         public CustomerViewModel Copy()
@@ -132,7 +150,8 @@ namespace WpfDemo.ViewModels
                 LastName = LastName,
                 DateOfBirth = DateOfBirth,
                 PanNo = PanNo,
-                AadharNo = AadharNo
+                AadharNo = AadharNo,
+                IsPrime = IsPrime
             };
         }
 

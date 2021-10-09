@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Globalization;
 using System.Windows.Data;
 
 namespace WpfDemo.ValueConverters
 {
-    public class DateToStringConverter : IValueConverter
+    public class BooleanToStringConverter : IValueConverter
     {
-        private const string DateFormat = "dd/MM/yyyy";
-        private const string Culture = "en-GB";
+        private const string YesText = "Yes";
+        private const string NoText = "No";
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -16,12 +15,12 @@ namespace WpfDemo.ValueConverters
                 return string.Empty;
             }
 
-            return ((DateTime)value).ToString(DateFormat);
+            return ((bool)value) ? YesText : NoText;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return DateTime.Parse(value.ToString(), new CultureInfo(Culture));
+            return (string)value == YesText;
         }
     }
 }

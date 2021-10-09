@@ -125,6 +125,7 @@
     <Compile Include="UserControls\CustomerList.xaml.cs">
       <DependentUpon>CustomerList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValueConverters\BooleanToStringConverter.cs" />
     <Compile Include="ValueConverters\DateToStringConverter.cs" />
     <Compile Include="ValueConverters\CustomerToDisplayNameConverter.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />

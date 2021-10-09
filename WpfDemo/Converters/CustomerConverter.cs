@@ -11,7 +11,8 @@
                 LastName = businessCustomer.LastName,
                 DateOfBirth = businessCustomer.DateOfBirth,
                 PanNo = businessCustomer.PanNo,
-                AadharNo = businessCustomer.AadharNo
+                AadharNo = businessCustomer.AadharNo,
+                IsPrime = businessCustomer.IsPrime
             };
         }
 
@@ -24,7 +25,8 @@
                 LastName = viewModelCustomer.LastName,
                 DateOfBirth = viewModelCustomer.DateOfBirth.Value,
                 PanNo = viewModelCustomer.PanNo,
-                AadharNo = viewModelCustomer.AadharNo
+                AadharNo = viewModelCustomer.AadharNo,
+                IsPrime = viewModelCustomer.IsPrime
             };
         }
     }

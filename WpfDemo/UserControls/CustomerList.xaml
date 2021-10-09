@@ -13,9 +13,11 @@
         <Grid.Resources>
             <converter:CustomerToDisplayNameConverter x:Key="customerToDisplayNameConverter"></converter:CustomerToDisplayNameConverter>
             <converter:DateToStringConverter x:Key="dateToStringConverter"></converter:DateToStringConverter>
+            <converter:BooleanToStringConverter x:Key="booleanToStringConverter"></converter:BooleanToStringConverter>
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height=".5*" />
+            <RowDefinition Height=".4*" />
+            <RowDefinition Height=".1*" />
             <RowDefinition Height=".1*" />
             <RowDefinition Height=".1*" />
             <RowDefinition Height=".1*" />
@@ -25,7 +27,7 @@
         <ListBox ItemsSource="{Binding CustomersView, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="0" x:Name="customerList">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="400">
+                    <Grid Width="400" x:Name="customerGrid">
                         <Grid.RowDefinitions>
                             <RowDefinition />
                         </Grid.RowDefinitions>
@@ -40,6 +42,11 @@
                         <Button Content="Update" Command="{Binding UpdateCustomer}" CommandParameter="{Binding ElementName=customerList,Path=SelectedItem}" Margin="4" Grid.Row="0" Grid.Column="2"  />
                         <Button Content="Delete" Command="{Binding DeleteCustomer}" CommandParameter="{Binding ElementName=customerList,Path=SelectedItem}" Margin="4" Grid.Row="0" Grid.Column="3"  />
                     </Grid>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsPrime}" Value="True">
+                            <Setter TargetName="customerGrid" Property="Background" Value="Blue" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -48,5 +55,6 @@
         <TextBlock Text="{Binding SelectedCustomer.DateOfBirth, Converter={StaticResource dateToStringConverter}}" Grid.Row="3" />
         <TextBlock Text="{Binding SelectedCustomer.PanNo}" Grid.Row="4" />
         <TextBlock Text="{Binding SelectedCustomer.AadharNo}" Grid.Row="5" />
+        <TextBlock Text="{Binding SelectedCustomer.IsPrime, Converter={StaticResource booleanToStringConverter}}" Grid.Row="6" />
     </Grid>
 </UserControl>

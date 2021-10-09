@@ -83,7 +83,8 @@ namespace WpfDemo.DataSources.MemoryDataSource
                     LastName = "Alam",
                     DateOfBirth = new DateTime(2012, 3, 12),
                     PanNo = "NA",
-                    AadharNo = "Sadik Aadhar"
+                    AadharNo = "Sadik Aadhar",
+                    IsPrime = true
                 },
                 new Customer()
                 {
@@ -92,7 +93,8 @@ namespace WpfDemo.DataSources.MemoryDataSource
                     LastName = "Alam",
                     DateOfBirth = new DateTime(1985, 4, 7),
                     PanNo = "NA",
-                    AadharNo = "Feroz Aadhar"
+                    AadharNo = "Feroz Aadhar",
+                    IsPrime = false
                 }
             });
         }

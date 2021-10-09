@@ -16,6 +16,8 @@ namespace WpfDemo.BusinessModels
 
         public string AadharNo { get; set; }
 
+        public bool IsPrime { get; set; }
+
         public Customer Copy()
         {
             return new Customer
@@ -25,7 +27,8 @@ namespace WpfDemo.BusinessModels
                 LastName = LastName,
                 DateOfBirth = DateOfBirth,
                 PanNo = PanNo,
-                AadharNo = AadharNo
+                AadharNo = AadharNo,
+                IsPrime = IsPrime
             };
         }
 
@@ -36,6 +39,7 @@ namespace WpfDemo.BusinessModels
             DateOfBirth = customer.DateOfBirth;
             PanNo = customer.PanNo;
             AadharNo = customer.AadharNo;
+            IsPrime = customer.IsPrime;
         }
     }
 }

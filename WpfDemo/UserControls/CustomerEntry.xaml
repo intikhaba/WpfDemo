@@ -19,7 +19,8 @@
             <RowDefinition Height="13*"  />
             <RowDefinition Height="13*"  />
             <RowDefinition Height="14*"  />
-            <RowDefinition Height="34*"  />
+            <RowDefinition Height="13*"  />
+            <RowDefinition Height="21*"  />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*" />
@@ -35,11 +36,8 @@
         <TextBox Text="{Binding Customer.PanNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3"  Grid.Column="1" Margin="2"  />
         <TextBlock Text="Aadhar" Grid.Row="4"  Grid.Column="0"  Margin="2"  />
         <TextBox Text="{Binding Customer.AadharNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4"  Grid.Column="1" Margin="2"  />
-        <Button Content="Save" Command="{Binding SaveCustomer}" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalAlignment="Right" Margin="2"  />
+        <TextBlock Text="Is Prime" Grid.Row="5"  Grid.Column="0"  Margin="2"  />
+        <CheckBox IsChecked="{Binding Customer.IsPrime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5"  Grid.Column="1" Margin="2"  />
+        <Button Content="Save" Command="{Binding SaveCustomer}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalAlignment="Right" Margin="2"  />
     </Grid>
-
-    <!--<StackPanel Orientation="Horizontal">
-            <TextBlock Text="First Name" />
-            <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
-        </StackPanel>-->
 </UserControl>
