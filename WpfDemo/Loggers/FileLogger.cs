@@ -13,7 +13,6 @@ namespace WpfDemo.Loggers
 
         private FileLogger()
         {
-            DateTime dateTime = DateTime.Now;
         }
 
         public void Log(string message)
