@@ -29,7 +29,7 @@ namespace WpfDemo.ViewModels
 
             UpdateCustomer = new RelayCommand((c) =>
             {
-                eventAggregator.GetEvent<CustomerUpdateSelectPubSubEvent>().Publish(c as CustomerViewModel);
+                eventAggregator.GetEvent<CustomerUpdateSelectPubSubEvent>().Publish((c as CustomerViewModel).Copy());
             }, (c) => c != null);
 
             DeleteCustomer = new RelayCommand((c) =>
