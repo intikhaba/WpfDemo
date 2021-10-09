@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using WpfDemo.ViewModels;
 
 namespace WpfDemo.UserControls
 {
@@ -19,9 +21,14 @@ namespace WpfDemo.UserControls
               , new FrameworkPropertyMetadata(new SolidColorBrush(Colors.HotPink), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault
                   , new PropertyChangedCallback(OnControlBackgroundColorChanged)));
 
+        public static RoutedCommand CancelCommand = new RoutedCommand();
+
         public CustomerEntry()
         {
             InitializeComponent();
+
+            var customCommandBinding = new CommandBinding(CancelCommand, ExecutedCancelCommand, CanExecuteCancelCommand);
+            CommandBindings.Add(customCommandBinding);
         }
 
         public SolidColorBrush ControlBackgroundColor
@@ -57,6 +64,30 @@ namespace WpfDemo.UserControls
         private void ChangeSaveLabel(DependencyPropertyChangedEventArgs e)
         {
             btnSave.Content = (string)e.NewValue;
+        }
+
+        private void ExecutedCancelCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            CustomerEntryViewModel customerEntryViewModel = DataContext as CustomerEntryViewModel;
+            customerEntryViewModel.Customer.Reset();
+        }
+
+        private void CanExecuteCancelCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (!(e.Source is Control target))
+            {
+                e.CanExecute = false;
+                return;
+            }
+
+            if (!(DataContext is CustomerEntryViewModel customerEntryViewModel))
+            {
+                e.CanExecute = false;
+                return;
+            }
+
+            CustomerViewModel customer = customerEntryViewModel.Customer;
+            e.CanExecute = customer.CanBeCleared();
         }
     }
 }

@@ -130,6 +130,12 @@ namespace WpfDemo.ViewModels
             }
         }
 
+        public RelayCommand ViewCustomer { get; set; }
+
+        public RelayCommand UpdateCustomer { get; set; }
+
+        public RelayCommand DeleteCustomer { get; set; }
+
         public void Reset()
         {
             Id = 0;
@@ -155,11 +161,15 @@ namespace WpfDemo.ViewModels
             };
         }
 
-        public RelayCommand ViewCustomer { get; set; }
+        public bool CanBeCleared()
+        {
+            return !string.IsNullOrWhiteSpace(FirstName)
+                    || !string.IsNullOrWhiteSpace(LastName)
+                    || !string.IsNullOrWhiteSpace(AadharNo)
+                    || !string.IsNullOrWhiteSpace(PanNo)
+                    || DateOfBirth.HasValue;
+        }
 
-        public RelayCommand UpdateCustomer { get; set; }
-
-        public RelayCommand DeleteCustomer { get; set; }
 
         private void NotifyPropertyChanged(string propertyName)
         {
