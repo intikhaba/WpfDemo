@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WpfDemo.BusinessLogics.Contracts;
+using WpfDemo.Loggers;
 using WpfDemo.Repositories;
 
 namespace WpfDemo.BusinessLogics.Implementations
@@ -29,6 +30,7 @@ namespace WpfDemo.BusinessLogics.Implementations
             if (customer == null) { throw new ArgumentNullException("Customer cannot be null or empty."); }
 
             customerRepository.Save(customer);
+            FileLogger.Instance.Log("SaveCustomer is finished");
         }
 
         public void DeleteCustomer(int customerId)

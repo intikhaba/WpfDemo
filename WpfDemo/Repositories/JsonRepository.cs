@@ -16,14 +16,14 @@ namespace WpfDemo.Repositories
             return JsonDataStore.GetEntities<T>();  
         }
 
-        public void Save(T t)
+        public async void Save(T t)
         {
-            JsonDataStore.SaveEntity(t);
+            await JsonDataStore.SaveEntity(t);
         }
 
-        public void Delete(int id)
+        public async void Delete(int id)
         {
-            JsonDataStore.DeleteEntity<T>(id);
+            await JsonDataStore.DeleteEntity<T>(id);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WpfDemo.BusinessModels;
+using WpfDemo.Loggers;
 
 namespace WpfDemo.DataSources.JsonDataSource
 {

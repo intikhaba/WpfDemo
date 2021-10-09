@@ -10,6 +10,7 @@ using Prism.Events;
 using WpfDemo.Bootstrappers;
 using WpfDemo.BusinessLogics.Contracts;
 using WpfDemo.Converters;
+using WpfDemo.Loggers;
 using WpfDemo.PubSubEvents;
 
 namespace WpfDemo.ViewModels
@@ -24,6 +25,7 @@ namespace WpfDemo.ViewModels
 
         public CustomerMainViewModel(ICustomerManager customerManager)
         {
+            FileLogger.Instance.Log("CustomerMainViewModel is started");
             this.customerManager = customerManager;//new CustomerManager();
 
             CustomerEntryViewModel = new CustomerEntryViewModel();

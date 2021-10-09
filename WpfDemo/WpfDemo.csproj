@@ -112,6 +112,8 @@
     <Compile Include="DataSources\MemoryDataSource\MemoryDataStore.cs" />
     <Compile Include="EventHandlers\CustomerEntryEventArgs.cs" />
     <Compile Include="EventHandlers\CustomerEntryEventHandler.cs" />
+    <Compile Include="Loggers\FileLogger.cs" />
+    <Compile Include="Loggers\ILogger.cs" />
     <Compile Include="PubSubEvents\CustomerDeletePubSubEvent.cs" />
     <Compile Include="PubSubEvents\CustomerUpdateSelectPubSubEvent.cs" />
     <Compile Include="PubSubEvents\CustomerSelectPubSubEvent.cs" />
