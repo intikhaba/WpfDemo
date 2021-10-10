@@ -29,7 +29,7 @@ namespace WpfDemo.ViewModels
             this.customerManager = customerManager;
             this.eventAggregator = eventAggregator;
 
-            InitializeCustomers();
+            GetCustomers();
             SubscribeEvents();
             ResetCustomerView();
         }
@@ -95,12 +95,9 @@ namespace WpfDemo.ViewModels
         {
             Task.Factory.StartNew(() =>
             {
-                CustomerViewModel newCustomer = c.Copy();
-                customerManager.SaveCustomer(newCustomer.ToBusinessCustomer());
-
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    InitializeCustomers();
+                    GetCustomers();
                 }), DispatcherPriority.Background);
             }).ContinueWith(t =>
             {
@@ -123,11 +120,6 @@ namespace WpfDemo.ViewModels
             Task.Factory.StartNew(() =>
             {
                 customerManager.DeleteCustomer(c.Id);
-
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    InitializeCustomers();
-                }), DispatcherPriority.Background);
             }).ContinueWith(t =>
             {
                 if (t.IsCompleted)
@@ -138,6 +130,11 @@ namespace WpfDemo.ViewModels
                     }
                     else
                     {
+                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            GetCustomers();
+                        }), DispatcherPriority.Background);
+
                         HandleSuccessfulPostTask("Customer is deleted successfully.", c);
                     }
                 }
@@ -161,7 +158,7 @@ namespace WpfDemo.ViewModels
             });
         }
 
-        private void InitializeCustomers()
+        private void GetCustomers()
         {
             List<CustomerViewModel> customers = customerManager.GetCustomers().Select(c => c.ToViewModelCustomer()).ToList();
             Customers = new ObservableCollection<CustomerViewModel>(customers);

@@ -25,7 +25,8 @@ namespace WpfDemo.Loggers
             DateTime dateTime = DateTime.Now;
             string filePath = $"{LoggerDirectory}\\{LoggerFileNamePrefix}_{dateTime.Day}_{dateTime.Month}_{dateTime.Year}.txt";
 
-            using (StreamWriter streamWriter = File.AppendText(filePath))
+            using (var stream = File.Open(filePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+            using (StreamWriter streamWriter = new StreamWriter(stream))
             {
                 string text = $"{DateTime.Now.ToString()}: {message}";
                 streamWriter.WriteLine(text);

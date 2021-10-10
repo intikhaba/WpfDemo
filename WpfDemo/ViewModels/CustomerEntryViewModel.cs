@@ -1,32 +1,29 @@
 ﻿using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using Prism.Events;
+using WpfDemo.BusinessLogics.Contracts;
 using WpfDemo.Commands;
-using WpfDemo.EventHandlers;
+using WpfDemo.Converters;
 using WpfDemo.PubSubEvents;
 
 namespace WpfDemo.ViewModels
 {
     public class CustomerEntryViewModel : INotifyPropertyChanged
     {
-        public event CustomerEntryEventHandler CustomerEntry;
         private CustomerViewModel customer;
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly ICustomerManager customerManager;
         private readonly IEventAggregator eventAggregator;
 
-        public CustomerEntryViewModel(IEventAggregator eventAggregator)
+        public CustomerEntryViewModel(ICustomerManager customerManager, IEventAggregator eventAggregator)
         {
             Customer = new CustomerViewModel();
 
+            this.customerManager = customerManager;
             this.eventAggregator = eventAggregator;
-
-            SaveCustomer = new RelayCommand((p) =>
-            {
-                var customerEntryPubSubEvent = new CustomerEntryPubSubEvent();
-                eventAggregator.GetEvent<CustomerEntryPubSubEvent>().Publish(Customer);
-                //CustomerEntry?.Invoke(this, new CustomerEntryEventArgs(Customer));
-                //Customer.Reset();
-            }, (p) => CanSaveCustomer);
-
+            InitializeCommands();
             SubscribeEvents();
         }
 
@@ -68,6 +65,35 @@ namespace WpfDemo.ViewModels
             {
                 Customer = c;
             });
+        }
+
+        private void HandleSaveCustomer()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                customerManager.SaveCustomer(Customer.ToBusinessCustomer());
+            }).ContinueWith(t =>
+            {
+                if (t.IsCompleted)
+                {
+                    if (t.IsFaulted)
+                    {
+                        MessageBox.Show(t.Exception.Message);
+                    }
+                    else
+                    {
+                        eventAggregator.GetEvent<CustomerEntryPubSubEvent>().Publish(Customer);
+                    }
+                }
+            });
+        }
+
+        private void InitializeCommands()
+        {
+            SaveCustomer = new RelayCommand((p) =>
+            {
+                HandleSaveCustomer();
+            }, p => CanSaveCustomer);
         }
     }
 }

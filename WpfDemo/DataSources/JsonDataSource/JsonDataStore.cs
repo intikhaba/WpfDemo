@@ -2,22 +2,30 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WpfDemo.BusinessModels;
-using WpfDemo.Loggers;
 
 namespace WpfDemo.DataSources.JsonDataSource
 {
     public static class JsonDataStore
     {
+        private const string JsonFileName = @"DataSources\JsonDataSource\JsonEntities.json";
+
         public static List<T> GetEntities<T>() where T : class, IBusinessEntity
         {
             if (typeof(T) == typeof(Customer))
             {
-                string jsonText = File.ReadAllText(@"DataSources\JsonDataSource\JsonEntities.json");
-                var customers = JsonConvert.DeserializeObject<ParentEntity>(jsonText).Customers;
-                return customers as List<T>;
+                using (var stream = File.Open(JsonFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    int length = (int)stream.Length;
+                    byte[] bytes = new byte[length];
+                    stream.Read(bytes, 0, length);
+                    string jsonText = UTF8Encoding.UTF8.GetString(bytes);
+                    var customers = JsonConvert.DeserializeObject<ParentEntity>(jsonText).Customers;
+                    return customers as List<T>;
+                }
             }
 
             throw new Exception("This is not supported type.");
@@ -104,9 +112,8 @@ namespace WpfDemo.DataSources.JsonDataSource
 
         private static void SaveEntities(ParentEntity parentEntity)
         {
-            string fileName = @"DataSources\JsonDataSource\JsonEntities.json";
-
-            using (var streamWriter = new StreamWriter(fileName))
+            using (var stream = File.Open(JsonFileName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite))
+            using (var streamWriter = new StreamWriter(stream))
             using (var writer = new JsonTextWriter(streamWriter) { Formatting = Formatting.Indented })
             {
                 var serializer = new JsonSerializer();

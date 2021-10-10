@@ -23,7 +23,6 @@ namespace WpfDemo.ViewModels
             this.eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
             PublishEvents();
         }
-        
 
         public int Id { get; set; }
 
