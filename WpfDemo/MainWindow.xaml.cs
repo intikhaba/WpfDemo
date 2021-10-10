@@ -1,7 +1,4 @@
 ﻿using System.Windows;
-using WpfDemo.Bootstrappers;
-using WpfDemo.BusinessLogics.Contracts;
-using WpfDemo.ViewModels;
 
 namespace WpfDemo
 {
@@ -13,7 +10,6 @@ namespace WpfDemo
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new CustomerMainViewModel(Bootstrapper.Resolve<ICustomerManager>());
         }
     }
 }

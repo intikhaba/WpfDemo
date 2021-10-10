@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:WpfDemo.UserControls"
+        xmlns:prism="http://www.codeplex.com/prism" 
         mc:Ignorable="d"
+        WindowState="Maximized"
         Title="Customer" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,9 +16,17 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <uc:CustomerEntry Grid.Row="0" Grid.Column="0" DataContext="{Binding CustomerEntryViewModel}"
+        <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch">
+            <ContentControl prism:RegionManager.RegionName="LeftRegion"></ContentControl>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch">
+            <ContentControl prism:RegionManager.RegionName="RightRegion"></ContentControl>
+        </StackPanel>
+        <!--<uc:CustomerList Grid.Row="0" Grid.Column="1" DataContext="{Binding CustomerListViewModel}" />-->
+
+        <!--<uc:CustomerEntry Grid.Row="0" Grid.Column="0" DataContext="{Binding CustomerEntryViewModel}"
                           ControlBackgroundColor="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CustomerEntryBackground}"
                           SaveLabel="{Binding Path=DataContext.SaveText, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
-        <uc:CustomerList Grid.Row="0" Grid.Column="1" DataContext="{Binding CustomerListViewModel}" />
+        -->
     </Grid>
 </Window>

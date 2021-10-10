@@ -1,9 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Threading;
 using Prism.Events;
-using WpfDemo.Bootstrappers;
+using WpfDemo.BusinessLogics.Contracts;
+using WpfDemo.Converters;
 using WpfDemo.PubSubEvents;
 
 namespace WpfDemo.ViewModels
@@ -14,25 +20,27 @@ namespace WpfDemo.ViewModels
         private CustomerViewModel selectedCustomer;
         public event PropertyChangedEventHandler PropertyChanged;
         private ObservableCollection<CustomerViewModel> customers;
+        private readonly ICustomerManager customerManager;
+        private readonly IEventAggregator eventAggregator;
+        private const string FirstNameSortField = "FirstName";
 
-        public CustomerListViewModel()
+        public CustomerListViewModel(ICustomerManager customerManager, IEventAggregator eventAggregator)
         {
-            Customers = new ObservableCollection<CustomerViewModel>(Enumerable.Empty<CustomerViewModel>());
-            var eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<CustomerSelectPubSubEvent>().Subscribe((c) =>
-            {
-                SelectedCustomer = c;
-            });
+            this.customerManager = customerManager;
+            this.eventAggregator = eventAggregator;
+
+            InitializeCustomers();
+            SubscribeEvents();
             ResetCustomerView();
         }
-
+        
         public ICollectionView CustomersView
         {
             get { return customersView; }
             set
             {
                 customersView = value;
-                NotifyPropertyChanged("CustomersView");
+                NotifyPropertyChanged(nameof(CustomersView));
             }
         }
 
@@ -62,7 +70,7 @@ namespace WpfDemo.ViewModels
                 {
                     selectedCustomer = null;
                 }
-                NotifyPropertyChanged("SelectedCustomer");
+                NotifyPropertyChanged(nameof(SelectedCustomer));
             }
         }
 
@@ -74,14 +82,89 @@ namespace WpfDemo.ViewModels
         private void ResetCustomerView()
         {
             CustomersView = CollectionViewSource.GetDefaultView(Customers);
-            CustomersView.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
-            //CustomersView = CollectionViewSource.GetDefaultView(customerView);
+            CustomersView.SortDescriptions.Add(new SortDescription(FirstNameSortField, ListSortDirection.Ascending));
             CustomersView.Refresh();
         }
 
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void OnCustomerSave(CustomerViewModel c)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                CustomerViewModel newCustomer = c.Copy();
+                customerManager.SaveCustomer(newCustomer.ToBusinessCustomer());
+
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    InitializeCustomers();
+                }), DispatcherPriority.Background);
+            }).ContinueWith(t =>
+            {
+                if (t.IsCompleted)
+                {
+                    if (t.IsFaulted)
+                    {
+                        MessageBox.Show(t.Exception.Message);
+                    }
+                    else
+                    {
+                        HandleSuccessfulPostTask("Customer is saved successfully.", c);
+                    }
+                }
+            });
+        }
+
+        private void OnCustomerDelete(CustomerViewModel c)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                customerManager.DeleteCustomer(c.Id);
+
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    InitializeCustomers();
+                }), DispatcherPriority.Background);
+            }).ContinueWith(t =>
+            {
+                if (t.IsCompleted)
+                {
+                    if (t.IsFaulted)
+                    {
+                        MessageBox.Show(t.Exception.Message);
+                    }
+                    else
+                    {
+                        HandleSuccessfulPostTask("Customer is deleted successfully.", c);
+                    }
+                }
+            });
+        }
+
+        private void HandleSuccessfulPostTask(string message, CustomerViewModel customerViewModel)
+        {
+            MessageBox.Show(message);
+            customerViewModel.Reset();
+            Unselect();
+        }
+
+        private void SubscribeEvents()
+        {
+            eventAggregator.GetEvent<CustomerEntryPubSubEvent>().Subscribe(OnCustomerSave);
+            eventAggregator.GetEvent<CustomerDeletePubSubEvent>().Subscribe(OnCustomerDelete);
+            eventAggregator.GetEvent<CustomerSelectPubSubEvent>().Subscribe((c) =>
+            {
+                SelectedCustomer = c;
+            });
+        }
+
+        private void InitializeCustomers()
+        {
+            List<CustomerViewModel> customers = customerManager.GetCustomers().Select(c => c.ToViewModelCustomer()).ToList();
+            Customers = new ObservableCollection<CustomerViewModel>(customers);
         }
     }
 }

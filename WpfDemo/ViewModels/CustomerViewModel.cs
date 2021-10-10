@@ -15,28 +15,15 @@ namespace WpfDemo.ViewModels
         private string panNo;
         private string aadharNo;
         private bool isPrime;
-
+        private readonly IEventAggregator eventAggregator;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public CustomerViewModel()
         {
-            var eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
-
-            ViewCustomer = new RelayCommand((c) =>
-            {
-                eventAggregator.GetEvent<CustomerSelectPubSubEvent>().Publish(c as CustomerViewModel);
-            }, (c) => c != null);
-
-            UpdateCustomer = new RelayCommand((c) =>
-            {
-                eventAggregator.GetEvent<CustomerUpdateSelectPubSubEvent>().Publish((c as CustomerViewModel).Copy());
-            }, (c) => c != null);
-
-            DeleteCustomer = new RelayCommand((c) =>
-            {
-                eventAggregator.GetEvent<CustomerDeletePubSubEvent>().Publish(c as CustomerViewModel);
-            }, (c) => c != null);
+            this.eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
+            PublishEvents();
         }
+        
 
         public int Id { get; set; }
 
@@ -149,7 +136,7 @@ namespace WpfDemo.ViewModels
 
         public CustomerViewModel Copy()
         {
-            return new CustomerViewModel
+            var customerViewModel = new CustomerViewModel
             {
                 Id = Id,
                 FirstName = FirstName,
@@ -157,8 +144,10 @@ namespace WpfDemo.ViewModels
                 DateOfBirth = DateOfBirth,
                 PanNo = PanNo,
                 AadharNo = AadharNo,
-                IsPrime = IsPrime
+                IsPrime = IsPrime,
             };
+
+            return customerViewModel;
         }
 
         public bool CanBeCleared()
@@ -170,10 +159,27 @@ namespace WpfDemo.ViewModels
                     || DateOfBirth.HasValue;
         }
 
-
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void PublishEvents()
+        {
+            ViewCustomer = new RelayCommand((c) =>
+            {
+                eventAggregator.GetEvent<CustomerSelectPubSubEvent>().Publish(c as CustomerViewModel);
+            }, (c) => c != null);
+
+            UpdateCustomer = new RelayCommand((c) =>
+            {
+                eventAggregator.GetEvent<CustomerUpdateSelectPubSubEvent>().Publish((c as CustomerViewModel).Copy());
+            }, (c) => c != null);
+
+            DeleteCustomer = new RelayCommand((c) =>
+            {
+                eventAggregator.GetEvent<CustomerDeletePubSubEvent>().Publish(c as CustomerViewModel);
+            }, (c) => c != null);
         }
     }
 }

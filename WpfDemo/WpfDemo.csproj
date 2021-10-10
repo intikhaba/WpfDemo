@@ -101,12 +101,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrappers\Bootstrapper.cs" />
+    <Compile Include="Bootstrappers\PrismStartup.cs" />
     <Compile Include="BusinessLogics\Contracts\ICustomerManager.cs" />
     <Compile Include="BusinessLogics\Implementations\CustomerManager.cs" />
     <Compile Include="BusinessModels\Customer.cs" />
     <Compile Include="BusinessModels\IBusinessEntity.cs" />
     <Compile Include="BusinessModels\ParentEntity.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Constants\UIConstants.cs" />
     <Compile Include="Converters\CustomerConverter.cs" />
     <Compile Include="DataSources\JsonDataSource\JsonDataStore.cs" />
     <Compile Include="DataSources\MemoryDataSource\MemoryDataStore.cs" />
@@ -121,6 +123,8 @@
     <Compile Include="Repositories\JsonRepository.cs" />
     <Compile Include="Repositories\MemoryRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="UIModules\CustomerListModule.cs" />
+    <Compile Include="UIModules\CustomerEntryModule.cs" />
     <Compile Include="UserControls\CustomerEntry.xaml.cs">
       <DependentUpon>CustomerEntry.xaml</DependentUpon>
     </Compile>
@@ -133,7 +137,6 @@
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\CustomerEntryViewModel.cs" />
     <Compile Include="ViewModels\CustomerListViewModel.cs" />
-    <Compile Include="ViewModels\CustomerMainViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

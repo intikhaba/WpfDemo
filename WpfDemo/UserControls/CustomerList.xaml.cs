@@ -1,4 +1,8 @@
 ﻿using System.Windows.Controls;
+using Prism.Events;
+using WpfDemo.Bootstrappers;
+using WpfDemo.BusinessLogics.Contracts;
+using WpfDemo.ViewModels;
 
 namespace WpfDemo.UserControls
 {
@@ -10,6 +14,7 @@ namespace WpfDemo.UserControls
         public CustomerList()
         {
             InitializeComponent();
+            DataContext = new CustomerListViewModel(Bootstrapper.Resolve<ICustomerManager>(), Bootstrapper.Resolve<IEventAggregator>());
         }
     }
 }

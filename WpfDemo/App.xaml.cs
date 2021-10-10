@@ -1,10 +1,5 @@
 ﻿using System.Windows;
 using WpfDemo.Bootstrappers;
-//using Microsoft.Practices.Unity;
-
-//IUnityContainer container = new UnityContainer();
-////or
-//var container = new UnityContainer();
 
 namespace WpfDemo
 {
@@ -18,9 +13,8 @@ namespace WpfDemo
             Bootstrapper.RegisterTypes();
             base.OnStartup(e);
 
-            //var mainWindowViewModel = container.Resolve<MainWindowViewModel>();
-            //var window = new MainWindow { DataContext = mainWindowViewModel };
-            //window.Show();
+            var prismStartup = new PrismStartup();
+            prismStartup.Run();
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

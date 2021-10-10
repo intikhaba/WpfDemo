@@ -2,6 +2,8 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Prism.Events;
+using WpfDemo.Bootstrappers;
 using WpfDemo.ViewModels;
 
 namespace WpfDemo.UserControls
@@ -29,6 +31,10 @@ namespace WpfDemo.UserControls
 
             var customCommandBinding = new CommandBinding(CancelCommand, ExecutedCancelCommand, CanExecuteCancelCommand);
             CommandBindings.Add(customCommandBinding);
+
+            DataContext = new CustomerEntryViewModel(Bootstrapper.Resolve<IEventAggregator>());
+            ControlBackgroundColor = Brushes.GreenYellow;
+            SaveLabel = "Store";
         }
 
         public SolidColorBrush ControlBackgroundColor

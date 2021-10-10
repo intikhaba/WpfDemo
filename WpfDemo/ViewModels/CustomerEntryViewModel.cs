@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using Prism.Events;
-using WpfDemo.Bootstrappers;
 using WpfDemo.Commands;
 using WpfDemo.EventHandlers;
 using WpfDemo.PubSubEvents;
@@ -12,15 +11,13 @@ namespace WpfDemo.ViewModels
         public event CustomerEntryEventHandler CustomerEntry;
         private CustomerViewModel customer;
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly IEventAggregator eventAggregator;
 
-        public CustomerEntryViewModel()
+        public CustomerEntryViewModel(IEventAggregator eventAggregator)
         {
             Customer = new CustomerViewModel();
 
-            //var eventAggregator = (IEventAggregator)Prism.Ioc.ContainerLocator.Container.Resolve(typeof(IEventAggregator));
-            //eventAggregator.
-
-            var eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
+            this.eventAggregator = eventAggregator;
 
             SaveCustomer = new RelayCommand((p) =>
             {
@@ -28,13 +25,9 @@ namespace WpfDemo.ViewModels
                 eventAggregator.GetEvent<CustomerEntryPubSubEvent>().Publish(Customer);
                 //CustomerEntry?.Invoke(this, new CustomerEntryEventArgs(Customer));
                 //Customer.Reset();
-            }, (p) => !string.IsNullOrWhiteSpace(Customer.FirstName) && !string.IsNullOrWhiteSpace(Customer.LastName)
-            && Customer.DateOfBirth.HasValue && !string.IsNullOrWhiteSpace(Customer.PanNo) && !string.IsNullOrWhiteSpace(Customer.AadharNo));
+            }, (p) => CanSaveCustomer);
 
-            eventAggregator.GetEvent<CustomerUpdateSelectPubSubEvent>().Subscribe((c) =>
-            {
-                Customer = c;
-            });
+            SubscribeEvents();
         }
 
         public CustomerViewModel Customer
@@ -55,9 +48,26 @@ namespace WpfDemo.ViewModels
 
         public RelayCommand SaveCustomer { get; set; }
 
+        private bool CanSaveCustomer
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(Customer.FirstName) && !string.IsNullOrWhiteSpace(Customer.LastName)
+                    && Customer.DateOfBirth.HasValue && !string.IsNullOrWhiteSpace(Customer.PanNo) && !string.IsNullOrWhiteSpace(Customer.AadharNo);
+            }
+        }
+
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void SubscribeEvents()
+        {
+            eventAggregator.GetEvent<CustomerUpdateSelectPubSubEvent>().Subscribe((c) =>
+            {
+                Customer = c;
+            });
         }
     }
 }
