@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Prism.Events;
-using WpfDemo.Bootstrappers;
+using Prism.Ioc;
 using WpfDemo.BusinessLogics.Contracts;
 using WpfDemo.ViewModels;
 
@@ -33,7 +33,7 @@ namespace WpfDemo.UserControls
             var customCommandBinding = new CommandBinding(CancelCommand, ExecutedCancelCommand, CanExecuteCancelCommand);
             CommandBindings.Add(customCommandBinding);
 
-            DataContext = new CustomerEntryViewModel(Bootstrapper.Resolve<ICustomerManager>(), Bootstrapper.Resolve<IEventAggregator>());
+            DataContext = new CustomerEntryViewModel(ContainerLocator.Container.Resolve<ICustomerManager>(), ContainerLocator.Container.Resolve<IEventAggregator>());
             ControlBackgroundColor = Brushes.GreenYellow;
             SaveLabel = "Store";
         }

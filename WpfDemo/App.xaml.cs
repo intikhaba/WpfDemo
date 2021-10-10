@@ -10,11 +10,10 @@ namespace WpfDemo
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            Bootstrapper.RegisterTypes();
-            base.OnStartup(e);
-
             var prismStartup = new PrismStartup();
             prismStartup.Run();
+
+            base.OnStartup(e);
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

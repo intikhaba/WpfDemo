@@ -100,7 +100,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Bootstrappers\Bootstrapper.cs" />
     <Compile Include="Bootstrappers\PrismStartup.cs" />
     <Compile Include="BusinessLogics\Contracts\ICustomerManager.cs" />
     <Compile Include="BusinessLogics\Implementations\CustomerManager.cs" />

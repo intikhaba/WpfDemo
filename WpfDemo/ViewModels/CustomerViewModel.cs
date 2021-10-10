@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Prism.Events;
-using WpfDemo.Bootstrappers;
+using Prism.Ioc;
 using WpfDemo.Commands;
 using WpfDemo.PubSubEvents;
 
@@ -20,7 +20,7 @@ namespace WpfDemo.ViewModels
 
         public CustomerViewModel()
         {
-            this.eventAggregator = Bootstrapper.Resolve<IEventAggregator>();
+            this.eventAggregator = ContainerLocator.Container.Resolve<IEventAggregator>();
             PublishEvents();
         }
 

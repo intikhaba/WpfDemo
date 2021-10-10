@@ -1,7 +1,11 @@
 ﻿using System.Windows;
+using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Unity;
+using WpfDemo.BusinessLogics.Contracts;
+using WpfDemo.BusinessLogics.Implementations;
+using WpfDemo.Repositories;
 using WpfDemo.UIModules;
 
 namespace WpfDemo.Bootstrappers
@@ -15,6 +19,9 @@ namespace WpfDemo.Bootstrappers
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<ICustomerManager, CustomerManager>();
+            containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
+            containerRegistry.Register(typeof(IRepository<>), typeof(JsonRepository<>));
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
